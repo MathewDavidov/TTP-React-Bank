@@ -9,13 +9,15 @@ class App extends Component {
     super();
 
     this.state = {
-      accountBalance: 14568.27,
+      accountBalance: 0,
       currentUser: {
         userName: "bob_loblaw",
         memberSince: "08/23/99",
       },
       debits: [],
-      credits: []
+      credits: [],
+      currentCredit: 0,
+      currentDebit: 0,
     };
   }
 
@@ -26,8 +28,22 @@ class App extends Component {
         const data = response.data;
 
         this.setState({
-          debits: data
+          debits: data,
+        });
+
+        let totalDebit = 0;
+
+        for (let debitObect of data) {
+          totalDebit += Number(debitObect.amount);
+        }
+
+        this.setState({
+          currentDebit: totalDebit
         })
+
+        this.setState({
+          accountBalance: (this.state.currentCredit - this.state.currentDebit).toFixed(2),
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -40,6 +56,20 @@ class App extends Component {
 
         this.setState({
           credits: data,
+        });
+
+        let totalCredit = 0;
+
+        for (let creditObject of data) {
+          totalCredit += Number(creditObject.amount);
+        }
+
+        this.setState({
+          currentCredit: totalCredit,
+        });
+
+        this.setState({
+          accountBalance: (this.state.currentCredit - this.state.currentDebit).toFixed(2),
         });
       })
       .catch((error) => {
@@ -57,9 +87,17 @@ class App extends Component {
     let updatedDebitsArray = [newDebit, ...this.state.debits];
     this.setState({
       debits: updatedDebitsArray,
-      accountBalance: this.state.accountBalance - Number(newDebit.amount)
-    })
-  }
+      accountBalance: (Number(this.state.accountBalance) - Number(newDebit.amount)).toFixed(2),
+    });
+  };
+
+  addCredits = (newCredit) => {
+    let updatedCreditsArray = [newCredit, ...this.state.credits];
+    this.setState({
+      credits: updatedCreditsArray,
+      accountBalance: (Number(this.state.accountBalance) + Number(newCredit.amount)).toFixed(2),
+    });
+  };
 
   render() {
     const HomeComponent = () => (
@@ -82,7 +120,7 @@ class App extends Component {
     );
 
     const DebitsComponent = () => (
-      <Debits 
+      <Debits
         debits={this.state.debits}
         accountBalance={this.state.accountBalance}
         addDebits={this.addDebits}
@@ -90,9 +128,10 @@ class App extends Component {
     );
 
     const CreditsComponent = () => (
-      <Credits 
+      <Credits
         credits={this.state.credits}
-        accountBalance={this.state.accountBalance}      
+        accountBalance={this.state.accountBalance}
+        addCredits={this.addCredits}
       />
     );
 
