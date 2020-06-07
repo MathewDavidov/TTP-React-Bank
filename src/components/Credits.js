@@ -2,31 +2,49 @@ import React, { Component } from "react";
 import Card from "./Card";
 import AccountBalance from "./AccountBalance";
 import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 class Credits extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: "",
-            description: "",
-            amount: "",
-            date: "",
-        };
+            creditInfo: {
+                id: "",
+                description: "",
+                amount: "",
+                date: ""
+            },
+            redirectToHome: false
+        }
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
+        this.props.addCredits(this.state.creditInfo);
+        this.setState({ redirectToHome: true });
     }
 
     handleChange = (event) => {
-        // this.setState({
-        //     description: event.target.value,
-        // })
-        console.log("change");
+        const name = event.target.name;
+        const newInput = event.target.value;
+        const newCreditInfo = {...this.state.creditInfo};
+        
+        newCreditInfo[name] = newInput; 
+
+        const date = new Date().toLocaleDateString("en-US");
+        newCreditInfo.date = date;
+        const id = Math.floor(Math.random() * 9999999999) + 1;
+        newCreditInfo.id = id;
+        this.setState({
+            creditInfo: newCreditInfo
+        });
     }
 
-
     render() {
+        if (this.state.redirectToHome) {
+          return <Redirect to="/" />;
+        }
+
         return (
             <div className="container">
                 <h1>Credits</h1>
@@ -49,6 +67,8 @@ class Credits extends Component {
                           value={this.state.description}
                           onChange={this.handleChange}
                           className="my-2 mr-2"
+                          name="description"
+                          required
                         ></input>
                         <input
                           type="number"
@@ -56,13 +76,16 @@ class Credits extends Component {
                           value={this.state.amount}
                           onChange={this.handleChange}
                           className="m-2"
+                          name="amount"
+                          step="0.01"
+                          required
                         ></input>
-                        <button
-                          type="button"
+                        <input
+                          type="submit"
                           className="btn btn-primary m-2"
+                          value="Add Debits"
                         >
-                            Add Credit
-                        </button>
+                        </input>
                     </form>
                 </div>
 

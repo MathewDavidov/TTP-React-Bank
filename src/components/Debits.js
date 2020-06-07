@@ -28,7 +28,7 @@ class Debits extends Component {
         const name = event.target.name;
         const newInput = event.target.value;
         const newDebitInfo = {...this.state.debitInfo};
-        
+
         newDebitInfo[name] = newInput; 
 
         const date = new Date().toLocaleDateString("en-US");
@@ -79,6 +79,7 @@ class Debits extends Component {
                   onChange={this.handleChange}
                   className="m-2"
                   name="amount"
+                  step="0.01"
                   required
                 ></input>
                 <input
