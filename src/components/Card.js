@@ -1,5 +1,6 @@
 import React from "react";
 
+// This functional component takes three props and creates a card. Used for debits and credits
 const DebitCard = ({ description, amount, date }) => {
     return (
       <div className="card text-center m-5">
