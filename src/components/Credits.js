@@ -14,6 +14,18 @@ class Credits extends Component {
         };
     }
 
+    handleSubmit = (event) => {
+        event.preventDefault();
+    }
+
+    handleChange = (event) => {
+        // this.setState({
+        //     description: event.target.value,
+        // })
+        console.log("change");
+    }
+
+
     render() {
         return (
             <div className="container">
@@ -23,8 +35,35 @@ class Credits extends Component {
                     Home
                 </Link>
 
-                <div>
+                <div className="m-5">
                     <AccountBalance accountBalance={this.props.accountBalance} />
+                </div>
+
+                <div className="m-5">
+                    <h2>New Credit</h2>
+
+                    <form onSubmit={this.handleSubmit}>
+                        <input
+                          type="text"
+                          placeholder="Description"
+                          value={this.state.description}
+                          onChange={this.handleChange}
+                          className="my-2 mr-2"
+                        ></input>
+                        <input
+                          type="number"
+                          placeholder="Amount"
+                          value={this.state.amount}
+                          onChange={this.handleChange}
+                          className="m-2"
+                        ></input>
+                        <button
+                          type="button"
+                          className="btn btn-primary m-2"
+                        >
+                            Add Credit
+                        </button>
+                    </form>
                 </div>
 
                 <div>
