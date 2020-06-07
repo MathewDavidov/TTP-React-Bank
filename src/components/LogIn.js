@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class LogIn extends Component {
   constructor() {
@@ -34,22 +35,37 @@ class LogIn extends Component {
     }
 
     return (
-      <div>
+      <div className="m-5">
+        <div>
+          <h1>Login</h1>
+        </div>
+
+        <div className="mt-2">
+          <Link to="/" className="btn btn-secondary m-1">
+            Home
+          </Link>
+        </div>
+
         <form onSubmit={this.handleSubmit}>
-          <div>
+          <div className="form-group">
             <label htmlFor="userName">User Name</label>
             <input
               type="text"
               name="userName"
               onChange={this.handleChange}
               value={this.state.user.userName}
+              class="form-control"
+              placeholder="John Doe"
             />
           </div>
-          <div>
+          <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input type="password" name="password" />
+            <input 
+              type="password" 
+              name="password"
+              class="form-control" />
           </div>
-          <button>Log In</button>
+          <button className="btn btn-primary">Log In</button>
         </form>
       </div>
     );
