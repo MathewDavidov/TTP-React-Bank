@@ -11,10 +11,9 @@ class UserProfile extends Component {
             <div>Member since: {this.props.memberSince}</div>
 
             <div>
-              <Link to="/">Go Back Home</Link>
-            </div>
-            <div>
-              <Link to="/login">Log In</Link>
+              <Link to="/" className="btn btn-secondary m-1">
+                Home
+              </Link>
             </div>
           </div>
         );
