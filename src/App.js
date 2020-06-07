@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import axios from "axios";
-import Home from "./components/Home";
-import UserProfile from "./components/UserProfile";
-import LogIn from "./components/LogIn";
-import Debits from "./components/Debits";
-import Credits from "./components/Credits";
+import { Home, LogIn, UserProfile, Debits, Credits } from "./components";
 import './App.css';
 
 class App extends Component {
@@ -57,6 +53,14 @@ class App extends Component {
     this.setState({ currentUser: newUser });
   };
 
+  addDebits = (newDebit) => {
+    let updatedDebitsArray = [newDebit, ...this.state.debits];
+    this.setState({
+      debits: updatedDebitsArray,
+      accountBalance: this.state.accountBalance - Number(newDebit.amount)
+    })
+  }
+
   render() {
     const HomeComponent = () => (
       <Home accountBalance={this.state.accountBalance} />
@@ -81,6 +85,7 @@ class App extends Component {
       <Debits 
         debits={this.state.debits}
         accountBalance={this.state.accountBalance}
+        addDebits={this.addDebits}
       />
     );
 
