@@ -18,31 +18,39 @@ class Debits extends Component {
         }
     }
 
+    // Once the user submits a new debit, call the addDebits function in App with our new state and redirect (both fields are 'required')
     handleSubmit = (event) => {
         event.preventDefault();
         this.props.addDebits(this.state.debitInfo);
         this.setState({ redirectToHome: true });
     }
 
+    // When the form input changes, update our state with the given description or amount and calculate an ID and current time
     handleChange = (event) => {
         const name = event.target.name;
         const newInput = event.target.value;
+
+        // Copy the current state object
         const newDebitInfo = {...this.state.debitInfo};
 
+        // This will update either the description or amount based on what input field was changed
         newDebitInfo[name] = newInput; 
 
+        // Get current date in US format
         const date = new Date().toLocaleDateString("en-US");
         newDebitInfo.date = date;
+
+        // Generate a pseudorandom ID 
         const id = Math.floor(Math.random() * 9999999999) + 1;
         newDebitInfo.id = id;
+
         this.setState({
             debitInfo: newDebitInfo
         });
-
-        console.log(newDebitInfo);
     }
 
     render() {
+        // If our form is completed upon submit, redirect to the home route
         if (this.state.redirectToHome) {
             return <Redirect to="/" />
         }

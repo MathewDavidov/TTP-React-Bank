@@ -21,6 +21,9 @@ class App extends Component {
     };
   }
 
+  /**
+   * On page load, call the debit and credit APIs to recieve the array of objects
+   */
   componentDidMount() {
     axios
       .get("https://moj-api.herokuapp.com/debits")
@@ -31,6 +34,7 @@ class App extends Component {
           debits: data,
         });
 
+        // Sum all debits from the data array
         let totalDebit = 0;
 
         for (let debitObect of data) {
@@ -41,6 +45,7 @@ class App extends Component {
           currentDebit: totalDebit
         })
 
+        // Because axios is async, we must update account balance on both axios get calls
         this.setState({
           accountBalance: (this.state.currentCredit - this.state.currentDebit).toFixed(2),
         });
@@ -58,6 +63,7 @@ class App extends Component {
           credits: data,
         });
 
+        // Sum all credits from the data array
         let totalCredit = 0;
 
         for (let creditObject of data) {
@@ -83,6 +89,7 @@ class App extends Component {
     this.setState({ currentUser: newUser });
   };
 
+  // This function takes a new debit object and appends it to the front of the debits array in state and updates the account balance
   addDebits = (newDebit) => {
     let updatedDebitsArray = [newDebit, ...this.state.debits];
     this.setState({
@@ -91,6 +98,7 @@ class App extends Component {
     });
   };
 
+  // This function takes a new credit object and appends it to the front of the credits array in state and updates the account balance
   addCredits = (newCredit) => {
     let updatedCreditsArray = [newCredit, ...this.state.credits];
     this.setState({
@@ -100,6 +108,7 @@ class App extends Component {
   };
 
   render() {
+    // Components for every route
     const HomeComponent = () => (
       <Home accountBalance={this.state.accountBalance} />
     );

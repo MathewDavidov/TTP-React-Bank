@@ -18,29 +18,39 @@ class Credits extends Component {
         }
     }
 
+    // Once the user submits a new credit, call the addCredits function in App with our new state and redirect (both fields are 'required')
     handleSubmit = (event) => {
         event.preventDefault();
         this.props.addCredits(this.state.creditInfo);
         this.setState({ redirectToHome: true });
     }
 
+    // When the form input changes, update our state with the given description or amount and calculate an ID and current time
     handleChange = (event) => {
         const name = event.target.name;
         const newInput = event.target.value;
+
+        // Copy the current state object
         const newCreditInfo = {...this.state.creditInfo};
         
+        // This will update either the description or amount based on what input field was changed
         newCreditInfo[name] = newInput; 
 
+        // Get current date in US format
         const date = new Date().toLocaleDateString("en-US");
         newCreditInfo.date = date;
+
+        // Generate a pseudorandom ID 
         const id = Math.floor(Math.random() * 9999999999) + 1;
         newCreditInfo.id = id;
+
         this.setState({
             creditInfo: newCreditInfo
         });
     }
 
     render() {
+        // If our form is completed upon submit, redirect to the home route
         if (this.state.redirectToHome) {
           return <Redirect to="/" />;
         }
